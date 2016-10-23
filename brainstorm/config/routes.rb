@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  root to: 'users#index'
   get 'games/leaderboard'
 
   get 'users/index'
