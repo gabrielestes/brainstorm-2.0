@@ -1,3 +1,4 @@
+$( document ).ready(function() {
 //HIDE STUFF
 $('form span').hide();
 // $('.register').hide();
@@ -139,3 +140,4 @@ $('#confirm-password').focus(confirmPassword).keyup(confirmPassword).keyup(enabl
 
 
 enableSubmit();
+});

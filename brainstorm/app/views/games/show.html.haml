@@ -1,0 +1,54 @@
+!!! 5
+%html.leaderboard(lang='en')
+  %head
+    %meta(charset='UTF-8')
+    %meta(content='width=device-width, initial-scale=1' name='viewport')
+    %title brainsto.rm
+    %link( href="https://fonts.googleapis.com/css?family=Fredoka+One|Open+Sans|Lato" rel="stylesheet")
+    %link(rel="icon" type='image/png' href="/assets/storm_logo.png")
+    %link(rel="stylesheet" href="/assets/main.min.css")
+%body.leaderboard
+  - user = [{user_name: 'Lindsey Adams', high_score: '12,000'}, {user_name: 'Jason Carr', high_score: '10,000'}, {user_name: 'Gabe Estes', high_score: '9,700'}, {user_name: 'Jenn Tustin', high_score: '9,300'}, {user_name: 'Dan Yuschick', high_score: '3,200'}]
+  - topPlayer = {user_name: 'Somebody Else', high_score: '20,000'}
+  %header
+    %img.storm(src='/assets/storm_logo.png' alt='grey storm logo')
+    %img.lightning(src='/assets/storm_logo_white.png' alt='white storm logo')
+    %h1.logo(data-shadow='brainstorm') brainsto.rm
+    %nav.menu
+      %ul.navbar
+        %li.play
+          %a.play(href='#') Play
+        %li.leaderboard
+          %a.leaderboard(href='#') Leaderboard
+        %li.account
+          %a.account(href='#') Account
+        %li.logout
+          %a.logout(href='users/logout') Logout
+    %nav.menu-small
+      %h3.nav
+        %a.menu Menu
+      %div.drop-nav
+        %ul
+          %li.play
+            %a.play(href='#') Play
+          %li.leaderboard
+            %a.leaderboard(href='#') Leaderboard
+          %li.account
+            %a.account(href='#') Account
+          %li.logout
+            %a.logout(href='#') Logout
+  %section.leaderboard-container
+    %div.header
+      %img.award(src='/assets/award_icon.svg' alt='award icon')
+      %h3 Top Players
+    %div.stats
+      %ul.players
+        - (user).each_with_index do |user, index|
+          %li.player{:class => '#{index}'}
+            %p.rank(data-id='rank')
+            %p.player-name(data-id='user-name') #{user[:user_name]}
+            %p.score(data-id='high-score')
+              %span #{user[:high_score]}
+
+%script(src='/assets/vendor.min.js')
+%script(src='/assets/leaderboard.js')

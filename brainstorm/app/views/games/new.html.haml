@@ -1,0 +1,65 @@
+!!! 5
+%html.game
+  %head
+    %meta(charset='UTF-8')
+    %meta(content='width=device-width, initial-scale=1' name='viewport')
+    %title Brainstorm - Game
+    %link(href="https://fonts.googleapis.com/css?family=Fredoka+One%7COpen+Sans" rel="stylesheet")
+    %link(rel="icon" type='image/png' href="/assets/storm_logo.png")
+    %link(rel='stylesheet' href='/assets/main.min.css')
+  %body.game
+    %audio.music(style="display: none" loop)
+      %source.song(style="display:none" src="embedded music/01 Heartbeats [DVD].mp3" type="audio/mpeg")
+    %header
+      %img.storm(src='/assets/storm_logo.png' alt='grey storm logo')
+      %img.lightning(src='/assets/storm_logo_white.png' alt='white storm logo')
+      %h1.logo(data-shadow='brainstorm') brainsto.rm
+      %nav.menu
+        %ul.navbar
+          %li.play
+            %a.play(href='#') Play
+          %li.leaderboard
+            %a.leaderboard(href='#') Leaderboard
+          %li.account
+            %a.account(href='#') Account
+          %li.logout
+            %a.logout(href='#') Logout
+      %nav.menu-small
+        %h3.nav
+          %a.menu Menu
+        %div.drop-nav
+          %ul
+            %li.play
+              %a.play(href='#') Play
+            %li.leaderboard
+              %a.leaderboard(href='#') Leaderboard
+            %li.account
+              %a.account(href='#') Account
+            %li.logout
+              %a.logout(href='#') Logout
+    %input.mute-button(type="button" value="Mute")
+    %input.start-game(type="button" value="Start Game")
+    .game-container
+      .scores-container
+        %ul
+          %li.solution-score +100
+          %li.current-score SCORE: <br> 0
+          %li.personal-best PERSONAL BEST: <br> 0
+          %li.high-score HIGH SCORE: <br> 0
+      %img.cloudOne(src='/assets/clouds_3.png' alt='cloud image')
+      %img.cloudTwo(src='/assets/clouds_4.png' alt='cloud image')
+      %img.cloudThree(src='/assets/clouds_5.png' alt='cloud image')
+      %img.cloudFour(src='/assets/clouds_6.png' alt='cloud image')
+      %img.cloudFive(src='/assets/clouds_5.png' alt='cloud image')
+      %img.cloudSix(src='/assets/clouds_4.png' alt='cloud image')
+      %form.solution
+        %input.solution-field(id="solution-field" type="text" placeholder="=" autocomplete='off')
+      %form.score-submission(action="create" method="post")
+        %input.score-to-send(type="text" readonly="readonly" name="score" value="600")
+        %input.user-id(type="text" readonly="readonly" name="user-id" value="#{session[:user_id]}")
+        %input(id="submit" type="submit" value="SUBMIT")
+      .grass-container
+        %img.grass(src='/assets/grass.png')
+
+    %script(src="/assets/vendor.min.js")
+    %script(src="/assets/game.js")

@@ -1,0 +1,80 @@
+!!! 5
+%html.profile(lang='en')
+  %head
+    %meta(charset='UTF-8')
+    %meta(content='width=device-width, initial-scale=1' name='viewport')
+    %title brainsto.rm
+    %link( href="https://fonts.googleapis.com/css?family=Fredoka+One|Open+Sans|Lato" rel="stylesheet")
+    %link(rel="icon" type='image/png' href="/assets/storm_logo.png")
+    %link(rel="stylesheet" href="/assets/main.min.css")
+%body.profile
+  - user = {user_name: 'Lindsey Adams', high_score: '12,000', email:'linzma87@gmail.com', twitter:'@turmerictotebag', instagram:'@lindsmadams'}
+  - topPlayer = {user_name: 'Somebody Else', high_score: '20,000'}
+  %header
+    %img.storm(src='/assets/storm_logo.png' alt='grey storm logo')
+    %img.lightning(src='/assets/storm_logo_white.png' alt='white storm logo')
+    %h1.logo(data-shadow='brainstorm') brainsto.rm
+    %nav.menu
+      %ul.navbar
+        %li.play
+          %a.play(href='/games/play') Play
+        %li.leaderboard
+          %a.leaderboard(href='#') Leaderboard
+        %li.account
+          %a.account(href='#') Account
+        %li.logout
+          %a.logout(href='/users/logout') Logout
+    %nav.menu-small
+      %h3.nav
+        %a.menu Menu
+      %div.drop-nav
+        %ul
+          %li.play
+            %a.play(href='#') Play
+          %li.leaderboard
+            %a.leaderboard(href='#') Leaderboard
+          %li.account
+            %a.account(href='#') Account
+          %li.logout
+            %a.logout(href='#') Logout
+  %section.profile-container
+    %div.initials
+      %h3 LA
+    %ul.user-info
+      %li.name(data-id='user-name')= @user.name
+      %li.score(data-id='high-score')
+        high score:
+        %span #{user[:high_score]}
+      %hr
+      %li(data-id='twitter')
+        %img(src='/assets/twitter_icon.png' alt='twitter icon')
+        %p #{user[:twitter]}
+      %li.instagram(data-id='instagram')
+        %img(src='/assets/instagram_icon.png' alt='instagram icon')
+        %p #{user[:instagram]}
+      %li(data-id='email')
+        %img(src='/assets/email_icon.png' alt='email icon')
+        %p #{user[:email]}
+      %div.edit
+        %img.edit(src='/assets/edit_icon.png' alt='edit icon')
+    %ul.edit-info
+      %li.name(data-id='user-name') #{user[:user_name]}
+      %li.score(data-id='high-score')
+        high score:
+        %span #{user[:high_score]}
+      %hr
+      %form
+        %li(data-id='twitter')
+          %img(src='/assets/twitter_icon.png' alt='twitter icon')
+          %input(placeholder='#{user[:twitter]}')
+        %li.instagram(data-id='instagram')
+          %img(src='/assets/instagram_icon.png' alt='instagram icon')
+          %input(placeholder='#{user[:instagram]}')
+        %li(data-id='email')
+          %img(src='/assets/email_icon.png' alt='email icon')
+          %input(placeholder='#{user[:email]}')
+      %div.save
+        %img.save(src='/assets/save_icon.png' alt='save icon')
+
+  %script(src='/assets/vendor.min.js')
+  %script(src='/assets/profile.js')

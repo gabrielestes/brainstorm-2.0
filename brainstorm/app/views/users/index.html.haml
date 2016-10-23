@@ -5,14 +5,20 @@
     %meta(content='width=device-width, initial-scale=1' name='viewport')
     %title Brainstorm - LogIn
     %link( href="https://fonts.googleapis.com/css?family=Fredoka+One|Open+Sans" rel="stylesheet")
-    %link(rel="icon" type='image/png' href="images/storm_logo.png")
-    %link(rel='stylesheet' href='libdev/styles/main.min.css')
+    %link(rel="icon" type='image/png' href="/assets/storm_logo.png")
+    %link(rel='stylesheet' href='/assets/main.min.css')
   %body.index
     %header
-      %img.storm(src='images/storm_logo.png' alt='grey storm logo')
-      %img.lightning(src='images/storm_logo_white.png' alt='white storm logo')
+      %img.storm(src='/assets/storm_logo.png' alt='grey storm logo')
+      %img.lightning(src='/assets/storm_logo_white.png' alt='white storm logo')
       %h1.logo(data-shadow='brainstorm') brainsto.rm
     .index-container
+      %h4
+        - flash.each do |key, value|
+          .alert{ :class => "alert-#{key}" }
+          -# %button.close{ :data => { :dismiss => "alert" } } x
+          %strong
+            = value
       .new-or-returning
         %form
           %p
@@ -20,34 +26,51 @@
             %input(id="register" type="button" value="REGISTER")
             %input(id="login" type="button" value="LOGIN")
       .register
-        %form(action="#" method="post")
+        -# %form(action="users/create" method="post")
+        = form_for @user, url: users_create_path, method: :post do |f|
+          - if @user.errors.any?
+            %h2(class="error_messages") Form is invalid
+            %ul
+              - @user.errors.full_messages.each do |message|
+                %li= message
           %p
             %label(for="player-name-reg") Player Name
-            %input(class="text-input" id="player-name-reg" name="player-name-reg" type="text")
+            = f.text_field :name, class: "text-input", id:"player-name-reg", name:"player-name-reg", type:"text"
+            -# %input(class="text-input" id="player-name-reg" name="player-name-reg" type="text")
             %span.requirement-right Player name must have at least 5 characters
           %p
             %label(for="email") Player Email
             %span.requirement-left Invalid email address
-            %input(class="text-input" id="email" name="email" type="email")
+            = f.text_field :email, class: "text-input", id:"email", name:"email", type:"email"
+            -# %input(class="text-input" id="email" name="email" type="email")
             %span.requirement-right Keep going
           %p
             %label(for="password") Password
             %span.requirement-left Enter a password with at least one capital letter (A-Z), one lowercase letter (a-z) and one number (0-9).
-            %input(class="text-input" id="password" name="password" type="password")
+            = f.password_field :password, class:"text-input", id:"password", name:"password", type:"password"
+            -# %input(class="text-input" id="password" name="password" type="password")
             %span.requirement-right Enter a password longer than 6 characters
           %p
             %label(for="confirm-password") Confirm Password
-            %input(class="text-input" id="confirm-password" name="confirm-password" type="password")
+            = f.password_field :password_confirmation, class:"text-input", id:"confirm-password", name:"confirm-password", type:"password"
+            -# %input(class="text-input" id="confirm-password" name="confirm-password" type="password")
             %span.requirement-left Please confirm your password
           %p
-            %input(id="submit-register" type="submit" value="REGISTER")
+            = f.submit :post, id:"submit-register", type:"submit", value:"REGISTER"
+            -# %input(id="submit-register" type="submit" value="REGISTER")
       .login
-        %form(action="#" method="post")
+        %form(action="login" method="post")
           %p
             %label(for="player-name-login") Player Name
+            -# = f.text_field :name, id:"password", name:"password", type:"password"
             %input(id="player-name-login" name="player-name-login" type="text")
             %span.requirement-right Enter your player name
           %p
+          %p
+            %label(for="player-password-login") Password
+            %input(id="player-password-login" name="player-password-login" type="password")
+            %span.requirement-right Enter your password
+          %p
             %input(id="submit-login" type="submit" value="LOGIN")
-    %script(src="libdev/js/vendor.min.js")
-    %script(src="libdev/js/index.js")
+    %script(src="/assets/vendor.min.js")
+    %script(src="/assets/index.js")
