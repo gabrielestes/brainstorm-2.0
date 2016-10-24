@@ -37,6 +37,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(session[:user_id])
+    @personal_best = Game.where(user_id: session[:user_id]).max
+    p @personal_best
   end
 
   def logout

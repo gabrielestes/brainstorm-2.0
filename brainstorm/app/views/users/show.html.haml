@@ -39,40 +39,40 @@
             %a.logout(href='/users/logout') Logout
   %section.profile-container
     %div.initials
-      %h3 LA
+      %h3= @user.name[0].capitalize
     %ul.user-info
       %li.name(data-id='user-name')= @user.name
       %li.score(data-id='high-score')
         high score:
-        %span #{user[:high_score]}
+        %span= @personal_best.score
       %hr
       %li(data-id='twitter')
         %img(src='/assets/twitter_icon.png' alt='twitter icon')
-        %p #{user[:twitter]}
+        %p= @user.twitter
       %li.instagram(data-id='instagram')
         %img(src='/assets/instagram_icon.png' alt='instagram icon')
-        %p #{user[:instagram]}
+        %p= @user.instagram
       %li(data-id='email')
         %img(src='/assets/email_icon.png' alt='email icon')
-        %p #{user[:email]}
+        %p= @user.email
       %div.edit
         %img.edit(src='/assets/edit_icon.png' alt='edit icon')
     %ul.edit-info
       %li.name(data-id='user-name') #{user[:user_name]}
       %li.score(data-id='high-score')
         high score:
-        %span #{user[:high_score]}
+        %span= @personal_best.score
       %hr
       %form
         %li(data-id='twitter')
           %img(src='/assets/twitter_icon.png' alt='twitter icon')
-          %input(placeholder='#{user[:twitter]}')
+          %input(placeholder='\@twitteraccount')
         %li.instagram(data-id='instagram')
           %img(src='/assets/instagram_icon.png' alt='instagram icon')
-          %input(placeholder='#{user[:instagram]}')
+          %input(placeholder='Instagram')
         %li(data-id='email')
           %img(src='/assets/email_icon.png' alt='email icon')
-          %input(placeholder='#{user[:email]}')
+          %input(placeholder='me\@you.com')
       %div.save
         %img.save(src='/assets/save_icon.png' alt='save icon')
 

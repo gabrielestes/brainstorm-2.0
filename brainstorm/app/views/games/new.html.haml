@@ -9,7 +9,7 @@
     %link(rel='stylesheet' href='/assets/main.min.css')
   %body.game
     %audio.music(style="display: none" loop)
-      %source.song(style="display:none" src="embedded music/01 Heartbeats [DVD].mp3" type="audio/mpeg")
+      %source.song(style="display:none" src="/assets/game_music.mp3" type="audio/mpeg")
     %header
       %img.storm(src='/assets/storm_logo.png' alt='grey storm logo')
       %img.lightning(src='/assets/storm_logo_white.png' alt='white storm logo')
@@ -44,8 +44,8 @@
         %ul
           %li.solution-score +100
           %li.current-score SCORE: <br> 0
-          %li.personal-best PERSONAL BEST: <br> #{session[:user_id].score.max}
-          %li.high-score HIGH SCORE: <br> #{@games[:score].max}
+          %li.personal-best PERSONAL BEST: <br> #{@personal_best}
+          %li.high-score HIGH SCORE: <br> #{@high_score}
       %img.cloudOne(src='/assets/clouds_3.png' alt='cloud image')
       %img.cloudTwo(src='/assets/clouds_4.png' alt='cloud image')
       %img.cloudThree(src='/assets/clouds_5.png' alt='cloud image')

@@ -1,24 +1,57 @@
-$(document).ready(function() {
+'use strict';
+
+$(document).ready(function () {
+
+    // nav and header event handlers
+    $('nav.menu').on('click', 'a', function () {
+        $('a').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('header').on('click', 'a.menu', function () {
+        $(this).toggleClass('active');
+        $('.drop-nav').toggleClass('active');
+    });
+    $('h1.logo').hover(function () {
+        $('.lightning').css('display', 'block');
+        $('.storm').css('display', 'none');
+    }, function () {
+        $('.lightning').css('display', 'none');
+        $('.storm').css('display', 'block');
+    });
+
     //GLOBAL VARIABLES
+
     var allRaindrops = [];
-    var interval = 5000;
+    //this is the interval between the creation of new drops
+    var interval = 3000;
+    //this is the rate by which interval is decreased when each drop is made
+    var frequencyIncrese = 70;
+    //this is the amount of time(ms) that it take a drop to reach the bottom when the game begins
+    var rainSpeed = 14000;
+    //this is the amount of time(ms) which elapse before the fall speed increases
+    var increaseSpeedInterval = 30000;
     var gameDuration = null;
     var currentGameScore = 0;
+    var assets = new Audio('/assets/game_music.mp3');
 
     //Mute button functionality
-    $('.mute-button').on('click', function() {
+    $('.mute-button').on('click', function () {
         $(this).toggleClass('active');
-        $('.music').prop('muted', !$('.music').prop('muted'));
+        if (audio.play()) {
+            audio.pause();
+        } else {
+            audio.play();
+        }
     });
 
     //Start Game button
-    $('.start-game').on('click', function() {
-        $('.start-game').hide();
+    $('.start-game').on('click', function () {
+        // audio.play();
         makeItRain();
     });
 
     //Solution-field
-    $('form').on('keypress', '.solution-field', function(event) {
+    $('form').on('keypress', '.solution-field', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
             var userSolution = $(this).val();
@@ -29,56 +62,72 @@ $(document).ready(function() {
 
     //Game FUNCTIONS
     function makeItRain() {
-        currentGameScore = 0;
+        $('.start-game').hide();
         new Raindrop();
         setFocus();
         hideCursor();
         runGame();
+        setRainSpeed();
     }
-
-    // function playMusic() {
-    //   $('.music').on("load", function() {
-    //        $('.music').play();
-    //    }, true);
-    //    $('.start').click(function() {
-    //        $('.music').play();
-    //    });
-    // }
 
     function hideCursor() {
         $('html').css({
             cursor: 'none'
         });
-        setTimeout(function() {
-            $('.game-container').mousemove(function() {
+        setTimeout(function () {
+            $('.game-container').mousemove(function () {
                 $('html').css({
                     cursor: 'auto'
                 });
             });
         }, 300);
-
     }
 
     function setFocus() {
         var input = $('.solution-field');
+        input.attr("readonly", false);
         input.focus();
     }
 
     function runGame() {
-        gameDuration = setInterval(function() {
+        gameDuration = setInterval(function () {
             if (checkAnswers) {
                 new Raindrop();
-                interval -= 20;
+                interval -= frequencyIncrese;
             }
-
         }, interval);
     }
 
-    function endGame() {
-        setTimeout(function() {
-            clearInterval(gameDuration);
-        }, 900000);
+    function setRainSpeed() {
+        setInterval(function () {
+            rainSpeed -= 500;
+            return rainSpeed;
+        }, increaseSpeedInterval);
     }
+
+    function endGame() {
+        $(this).siblings('.raindrops').remove();
+        $('.solution-field').attr("readonly", true);
+        clearInterval(gameDuration);
+        alert("GAME OVER");
+        pushValues();
+        // reset();
+        // $('.start-game').show().val('Play Again');
+    }
+
+    function pushValues() {
+        $('.score-to-send').val(currentGameScore);
+        $('.score-submission').submit();
+    }
+
+    //Page refresh on form submission makes this funciton superfluous, but I'm leaving it in because I would eventually like to preventDefault and use this for smoother gameplay
+    // function reset() {
+    //     allRaindrops = [];
+    //     interval = 3000;
+    //     gameDuration = null;
+    //     currentGameScore = 0;
+    //     rainSpeed = 14000;
+    // }
 
     function checkAnswers(userSolution) {
         if (!userSolution) {
@@ -90,7 +139,7 @@ $(document).ready(function() {
             var drop = allRaindrops[index];
             if (drop.values.solution === numSolution) {
                 allRaindrops.splice(index, 1);
-                drop.self.remove().fadeOut();
+                drop.self.remove().stop();
                 correctOperators.push(drop.values.operator);
             }
         }
@@ -120,7 +169,7 @@ $(document).ready(function() {
                         scoreValue = (scoreValue + 2500) * multiplier;
                         break;
                     default:
-                        console.log("something went wrong");
+                        alert("Something went wrong");
                         break;
                 }
             }
@@ -133,11 +182,10 @@ $(document).ready(function() {
         if (scoreValue === "incorrect") {
             $('.solution-score').text(scoreValue);
         } else {
-            $('.solution-score').text("CORRECT! : +" + scoreValue);
+            $('.solution-score').text("CORRECT! :" + "\n" + "+" + scoreValue);
             currentGameScore += scoreValue;
-            $('.current-score').text("SCORE : " + currentGameScore);
+            $('.current-score').text("SCORE :" + "\n" + currentGameScore);
         }
-
     }
 
     //CONTRUCTORS
@@ -149,9 +197,10 @@ $(document).ready(function() {
             solution: null
         };
 
-        this.init = function() {
+        this.init = function () {
             this.generateProblem();
             this.self = this.createRaindrop();
+            this.rainFall(this.self, rainSpeed);
             allRaindrops.push(this);
         };
         this.init();
@@ -159,7 +208,7 @@ $(document).ready(function() {
 
     //PROTOTYPES
     Raindrop.prototype = {
-        generateOperator: function() {
+        generateOperator: function generateOperator() {
             var operator = "";
             var operNumber = Math.ceil(Math.random() * 4);
             if (operNumber === 1) {
@@ -175,7 +224,7 @@ $(document).ready(function() {
             return operator;
         },
 
-        generateNumbers: function(operator) {
+        generateNumbers: function generateNumbers(operator) {
             if (operator === "+" || operator === "-") {
                 this.genNumAddSub();
             } else if (operator === "*") {
@@ -185,28 +234,28 @@ $(document).ready(function() {
             }
         },
 
-        genNumAddSub: function() {
+        genNumAddSub: function genNumAddSub() {
             var operand1 = Math.ceil(Math.random() * 20),
                 operand2 = Math.ceil(Math.random() * 15);
             this.values.firstNumber = operand1;
             this.values.secondNumber = operand2;
         },
 
-        genNumMultiply: function() {
+        genNumMultiply: function genNumMultiply() {
             var operand = Math.ceil(Math.random() * 15),
                 multiplier = Math.ceil(Math.random() * 10);
             this.values.firstNumber = operand;
             this.values.secondNumber = multiplier;
         },
 
-        genNumDivide: function() {
-            var divider = Math.ceil(Math.random() * 13);
-            var operand = (Math.ceil(Math.random() * 15)) * divider;
+        genNumDivide: function genNumDivide() {
+            var divider = Math.ceil(Math.random() * 12);
+            var operand = Math.ceil(Math.random() * 13) * divider;
             this.values.firstNumber = operand;
             this.values.secondNumber = divider;
         },
 
-        generateProblem: function() {
+        generateProblem: function generateProblem() {
             this.generateNumbers(this.generateOperator());
             var solution = null,
                 operator = this.values.operator,
@@ -228,18 +277,20 @@ $(document).ready(function() {
             this.values.solution = solution;
         },
 
-        createRaindrop: function() {
-            var posLeft = Math.ceil(Math.random() * 70);
+        createRaindrop: function createRaindrop() {
+            var posLeft = Math.ceil(Math.random() * 69 + 13);
             $('.game-container').prepend($('<div/>').addClass('raindrop').css({
                 'left': posLeft + '%'
             }).text(this.values.firstNumber + this.values.operator + this.values.secondNumber));
-            this.rainFall(this.setRainSpeed());
             return $('.raindrop').first();
         },
 
-        setRainSpeed: function() {},
-
-        rainFall: function(rainSpeed) {}
+        rainFall: function rainFall(drop, rainSpeed) {
+            $(drop).animate({
+                "top": "87%"
+            }, rainSpeed, function () {
+                endGame();
+            });
+        }
     };
-
 });

@@ -2,28 +2,21 @@ class GamesController < ApplicationController
   before_action :signed_in?, only: [:show]
 
   def new
-
+    user_games = Game.where(user_id: session[:user_id])
+    @personal_best = user_games.order(:score).last.score
+    @high_score = Game.order(:score).last.score
+    p @personal_best
   end
 
   def create
-    # @game = Game
     p params
+
     @games = Game.all
-    @personal_best = Game.find_by
-    @personal_best = @personal_best.score.max
     @game = Game.new(score: params[:score], user_id: session[:user_id])
     @game.save
     flash[:notice] = "Thanks for playing!"
     redirect_to user_show_path(:id => session[:user_id])
-    # @user = User.new(name: params[:'player-name-reg'], email: params[:email])
-    # @user.password = params[:password]
-    # @user.password_confirmation = params[:password_confirmation]
-    # if @user.save
-    #   session[:user_id] = @user.id
-    #   redirect_to user_show_path(:id => @user.id), notice: "Thank you for signing up!"
-    # else
-    #   redirect_to root_path
-    # end
+    p "HIGH SCORE IS #{@high_score}"
   end
 
   def show
