@@ -8,6 +8,9 @@ class GamesController < ApplicationController
   def create
     # @game = Game
     p params
+    @games = Game.all
+    @personal_best = Game.find_by
+    @personal_best = @personal_best.score.max
     @game = Game.new(score: params[:score], user_id: session[:user_id])
     @game.save
     flash[:notice] = "Thanks for playing!"
@@ -26,4 +29,6 @@ class GamesController < ApplicationController
   def show
     @top_five = Game.order(score: :desc).first(5)
   end
+
+
 end
