@@ -32,7 +32,7 @@ $(document).ready(function () {
     var increaseSpeedInterval = 30000;
     var gameDuration = null;
     var currentGameScore = 0;
-    var assets = new Audio('/assets/game_music.mp3');
+    var assets = new Audio('/assets/music/game_music.mp3');
 
     //Mute button functionality
     $('.mute-button').on('click', function () {

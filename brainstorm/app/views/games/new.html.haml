@@ -55,8 +55,8 @@
       %form.solution
         %input.solution-field(id="solution-field" type="text" placeholder="=" autocomplete='off')
       %form.score-submission(action="create" method="post")
-        %input.score-to-send(type="text" readonly="readonly" name="score" value="600")
-        %input.user-id(type="text" readonly="readonly" name="user-id" value="#{session[:user_id]}")
+        %input.score-to-send(type="text" name="score")
+        -# %input.user-id(type="text" readonly="readonly" name="user-id")
         %input(id="submit" type="submit" value="SUBMIT")
       .grass-container
         %img.grass(src='/assets/grass.png')

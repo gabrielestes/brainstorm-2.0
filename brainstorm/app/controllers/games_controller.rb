@@ -9,14 +9,11 @@ class GamesController < ApplicationController
   end
 
   def create
-    p params
-
     @games = Game.all
     @game = Game.new(score: params[:score], user_id: session[:user_id])
     @game.save
     flash[:notice] = "Thanks for playing!"
     redirect_to user_show_path(:id => session[:user_id])
-    p "HIGH SCORE IS #{@high_score}"
   end
 
   def show

@@ -37,7 +37,11 @@ $('#login').on('click', function () {
 
 //PLAYER NAME ENTRY
 function checkPlayerName() {
-    return $('#player-name-reg').val().length >= 5;
+  var playerName = $('#player-name-reg')
+  if (playerName.length == 0) {
+    return false
+  }
+  return playerName.val().length >= 5;
 }
 
 function playerNameEvent() {
