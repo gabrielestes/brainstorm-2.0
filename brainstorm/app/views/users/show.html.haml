@@ -19,9 +19,9 @@
         %li.play
           %a.play(href='/games/play') Play
         %li.leaderboard
-          %a.leaderboard(href='#') Leaderboard
+          %a.leaderboard(href='/games/leaderboard') Leaderboard
         %li.account
-          %a.account(href='#') Account
+          %a.account(href="/users/#{session[:user_id]}") Account
         %li.logout
           %a.logout(href='/users/logout') Logout
     %nav.menu-small
@@ -30,13 +30,13 @@
       %div.drop-nav
         %ul
           %li.play
-            %a.play(href='#') Play
+            %a.play(href='/games/play') Play
           %li.leaderboard
-            %a.leaderboard(href='#') Leaderboard
+            %a.leaderboard(href='/games/leaderboard') Leaderboard
           %li.account
-            %a.account(href='#') Account
+            %a.account(href="/users/#{session[:user_id]}") Account
           %li.logout
-            %a.logout(href='#') Logout
+            %a.logout(href='/users/logout') Logout
   %section.profile-container
     %div.initials
       %h3 LA
